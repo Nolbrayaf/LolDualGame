@@ -9,7 +9,7 @@ class ProfileIcon extends Model
 {
     use HasFactory;
 
-
+    protected $fillable = ['id', 'image_path'];
 
 
     public function users()
