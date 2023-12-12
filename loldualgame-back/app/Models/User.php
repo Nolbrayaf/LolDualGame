@@ -8,6 +8,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
+
+
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -42,4 +44,19 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function profileIcon()
+    {
+        return $this->belongsTo(ProfileIcon::class, 'profile_icon_id');
+    }
+
+    public function matchSummaries()
+    {
+        return $this->hasMany(MatchSummary::class);
+    }
+
+    public function champions()
+    {
+        return $this->belongsToMany(Champion::class, 'users_champions');
+    }
 }
