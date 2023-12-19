@@ -14,11 +14,12 @@ class CreateSpellsTable extends Migration
             $table->foreign('champion_id')->references('id')->on('champions');
             $table->string('name');
             $table->text('description');
-            $table->integer('max_rank');
+            $table->integer('max_rank')->nullable();
             $table->string('image_path');
-            $table->json('cooldowns');
-            $table->json('cost');
-            $table->json('effect');
+            $table->json('cooldowns')->nullable();
+            $table->json('cost')->nullable();
+            $table->json('effect')->nullable();
+            $table->boolean('is_passive')->default(false);
             $table->timestamps();
         });
     }

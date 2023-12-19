@@ -13,7 +13,7 @@ class CreateChampionsTable extends Migration
             $table->string('name');
             $table->string('key');
             $table->string('title');
-            $table->json('info'); // Assurez-vous que votre base de données gère les types JSON
+            $table->json('info');
             $table->json('tags');
             $table->string('partype');
             $table->json('stats');
