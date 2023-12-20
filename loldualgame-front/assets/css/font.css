@@ -1,0 +1,66 @@
+/* Fonts */
+
+
+@font-face {
+    font-family: 'BeaufortforLOL';
+    src: url(~/assets/fonts/BeaufortforLOL-Regular.otf) format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'BeaufortforLOL';
+    src: url(~/assets/fonts/BeaufortforLOL-Bold.otf) format('opentype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'BeaufortforLOL';
+    src: url(~/assets/fonts/BeaufortforLOL-Bolditalic.otf) format('opentype');
+    font-weight: bold;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'BeaufortforLOL';
+    src: url(~/assets/fonts/BeaufortforLOL-Heavy.otf) format('opentype');
+    font-weight: 900;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'BeaufortforLOL';
+    src: url(~/assets/fonts/BeaufortforLOL-Heavyitalic.otf) format('opentype');
+    font-weight: 900;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'BeaufortforLOL';
+    src: url(~/assets/fonts/BeaufortforLOL-Light.otf) format('opentype');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'BeaufortforLOL';
+    src: url(~/assets/fonts/BeaufortforLOL-Lightitalic.otf) format('opentype');
+    font-weight: 300;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'BeaufortforLOL';
+    src: url(~/assets/fonts/BeaufortforLOL-Medium.otf) format('opentype');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'BeaufortforLOL';
+    src: url(~/assets/fonts/BeaufortforLOL-Mediumitalic.otf) format('opentype');
+    font-weight: 500;
+    font-style: italic;
+}
+

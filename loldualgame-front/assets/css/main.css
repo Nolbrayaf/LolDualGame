@@ -1,0 +1,46 @@
+body {
+    font-family: 'BeaufortforLOL';
+    color: #fff;
+    background: linear-gradient(to bottom, #091428 0%, #0A1428 100%);
+}
+
+.border-bottom-hover {
+    position: relative;
+}
+
+.border-bottom-hover::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%) translateY(-100%);
+    width: 50%;
+    border-bottom: 2px solid #785A28;
+    opacity: 0;
+    transition: all 0.3s ease-in-out;
+}
+
+.border-bottom-hover::after {
+    content: '';
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+    width: 10px;
+    height: 10px;
+    opacity: 0;
+    background-color: #091428;
+    transform: translateX(-50%) translateY(80%) rotate(45deg);
+    border: solid #785A28;
+    border-width: 0 3px 3px 0;
+    transition: all 0.2s ease-in-out;
+}
+
+.border-bottom-hover:hover::after {
+    opacity: 1;
+    transform: translateX(-50%) translateY(100%) rotate(45deg);
+}
+
+.border-bottom-hover:hover::before{
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
