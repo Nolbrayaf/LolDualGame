@@ -4,6 +4,15 @@ body {
     background: linear-gradient(to bottom, #091428 0%, #0A1428 100%);
 }
 
+.text-color-primary {
+    background: linear-gradient(to bottom, #F0E6D2, #C8AA6E, #C8AA6E, #C89B3C, #785A28, #463714, #32281E);
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+
+/* HOVER EFFECT ON NAV LINK */
+
 .border-bottom-hover {
     position: relative;
 }
@@ -40,7 +49,40 @@ body {
     transform: translateX(-50%) translateY(100%) rotate(45deg);
 }
 
-.border-bottom-hover:hover::before{
+.border-bottom-hover:hover::before {
     opacity: 1;
     transform: translateX(-50%) translateY(0);
 }
+
+/* END */
+
+
+.border-bottom {
+    position: relative;
+}
+
+.border-bottom::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50%;
+    border-bottom: 2px solid #785A28;
+    transition: all 0.3s ease-in-out;
+}
+
+.border-bottom::after {
+    content: '';
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+    width: 10px;
+    height: 10px;
+    background-color: #1E282D;
+    transform: translateX(-50%) translateY(100%) rotate(45deg);
+    border: solid #785A28;
+    border-width: 0 3px 3px 0;
+    transition: all 0.2s ease-in-out;
+}
+
