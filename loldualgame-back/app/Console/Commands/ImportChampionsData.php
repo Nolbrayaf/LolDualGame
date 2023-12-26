@@ -9,7 +9,7 @@ use App\Models\Spell;
 
 class ImportChampionsData extends Command
 {
-    protected $signature = 'import:champions-data';
+    protected $signature = 'download:champions-data';
     protected $description = 'Import all champion data';
 
     public function handle()
@@ -30,9 +30,10 @@ class ImportChampionsData extends Command
         $championResponse = $client->get("https://ddragon.leagueoflegends.com/cdn/13.24.1/data/fr_FR/champion/{$championId}.json");
         $championData = json_decode($championResponse->getBody(), true)['data'][$championId];
 
-        $splashArtPath = $this->downloadImage($client, "img/champion/splash/{$championId}_0.jpg", $championData['name']);
-        $dualArtPath = $this->downloadImage($client, "img/champion/loading/{$championId}_0.jpg", $championData['name']);
-        $squareArtPath = $this->downloadImage($client, "13.24.1/img/champion/{$championId}.png", $championData['name']);
+        $splashArtPath = $this->downloadImage($client, "img/champion/splash/{$championId}_0.jpg", $championData['name'], 'splash');
+        $dualArtPath = $this->downloadImage($client, "img/champion/loading/{$championId}_0.jpg", $championData['name'], 'dual');
+        $squareArtPath = $this->downloadImage($client, "13.24.1/img/champion/{$championId}.png", $championData['name'], 'square');
+
 
         $champion = Champion::updateOrCreate(
             ['key' => $championId],
@@ -59,7 +60,7 @@ class ImportChampionsData extends Command
     {
         foreach ($spellsData as $spellData) {
             $effectType = $this->determineEffectType($spellData);
-            $imagePath = $this->downloadImage($client, "13.24.1/img/spell/{$spellData['id']}.png", $champion->name, true);
+            $imagePath = $this->downloadImage($client, "13.24.1/img/spell/{$spellData['id']}.png", $champion->name, 'spell');
             $effects = [null, $spellData['effect'][1] ?? null];
 
             Spell::updateOrCreate(
@@ -78,7 +79,7 @@ class ImportChampionsData extends Command
         }
     }
 
-    private function downloadImage($client, $url, $championName, $isSpellImage = false)
+    private function downloadImage($client, $url, $championName, $imageType)
     {
         $baseDir = storage_path("app/public/champions");
         $championDir = $baseDir . '/' . $championName;
@@ -90,7 +91,7 @@ class ImportChampionsData extends Command
 
         // Déterminer le dossier de destination
         $destinationDir = $championDir;
-        if ($isSpellImage) {
+        if ($imageType == "spell") {
             $spellsDir = $championDir . '/spells';
             if (!file_exists($spellsDir)) {
                 mkdir($spellsDir, 0755, true);
@@ -98,12 +99,30 @@ class ImportChampionsData extends Command
             $destinationDir = $spellsDir;
         }
 
-        $imagePath = $destinationDir . '/' . basename($url);
+        switch($imageType){
+            case "splash":
+                $fileName = "{$championName}_splash.jpg";
+                break;
+            case "square":
+                $fileName = "{$championName}_square.png";
+                break;
+            case "dual":
+                $fileName = "{$championName}_dual.png";
+                break;
+            case "spell":
+                $fileName = basename($url);
+                break;
+            default:
+                $fileName = basename($url);
+                break;
+        }
+
+        $imagePath = $destinationDir . '/' . $fileName;
 
         $response = $client->get("https://ddragon.leagueoflegends.com/cdn/{$url}");
         file_put_contents($imagePath, $response->getBody());
 
-        return "champions/" . $championName . ($isSpellImage ? "/spells/" : "/") . basename($url);
+        return "champions/" . $championName . ($imageType == 'spell' ? "/spells/" : "/") . $fileName;
     }
 
 
