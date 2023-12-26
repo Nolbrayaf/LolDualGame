@@ -1,0 +1,1 @@
+<svg class="dropdown-indicator-arrow__ArrowIcon-sc-xoben1-0-ArrowDown IaTFK" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 8.69 4.69" style="enable-background:new 0 0 8.69 4.69" xml:space="preserve"><polyline class="st0" points="0.35,0.37 4.35,4.01 8.35,0.37 "></polyline><polygon class="st1" points="2.75,0.01 4.35,1.46 5.95,0.01 "></polygon></svg>

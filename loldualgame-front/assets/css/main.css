@@ -11,6 +11,18 @@ body {
 }
 
 
+input[type="search"]::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+    appearance: none;
+}
+input[type="search"]::-ms-clear {
+    display: none;
+}
+
+
+form {
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%);
+}
 /* HOVER EFFECT ON NAV LINK */
 
 .border-bottom-hover {
