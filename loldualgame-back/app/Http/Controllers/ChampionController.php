@@ -64,4 +64,20 @@ class ChampionController extends Controller
     {
         //
     }
+
+
+    public function getUniqueTags()
+    {
+        $uniqueTags = Champion::all('tags')
+                        ->pluck('tags')
+                        ->flatMap(function ($tags) {
+                            return json_decode($tags, true);
+                        })
+                        ->unique()
+                        ->sort()
+                        ->values();
+
+        return response($uniqueTags, 200);
+    }
+
 }

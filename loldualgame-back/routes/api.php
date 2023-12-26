@@ -20,3 +20,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::resource('champions', ChampionController::class);
+Route::get('/champions_tags', [ChampionController::class, 'getUniqueTags']);
