@@ -57,7 +57,7 @@ onMounted(() => {
         <!-- About Container -->
         <transition name="fade">
 
-            <div v-if="isAboutOpen" class="z-100 fixed bottom-0 top-0 left-0 right-0 bg-[rgba(0,0,0,0.5)]">
+            <div v-if="isAboutOpen" class="z-10 fixed bottom-0 top-0 left-0 right-0 bg-[rgba(0,0,0,0.5)]">
 
 
 

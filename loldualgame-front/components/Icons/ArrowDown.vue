@@ -1,1 +1,12 @@
-<svg class="dropdown-indicator-arrow__ArrowIcon-sc-xoben1-0-ArrowDown IaTFK" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 8.69 4.69" style="enable-background:new 0 0 8.69 4.69" xml:space="preserve"><polyline class="st0" points="0.35,0.37 4.35,4.01 8.35,0.37 "></polyline><polygon class="st1" points="2.75,0.01 4.35,1.46 5.95,0.01 "></polygon></svg>
+
+<template>
+    <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+        <path fill="rgb(148 163 184)" stroke="rgb(148 163 184)" d="m12 15.4l-6-6L7.4 8l4.6 4.6L16.6 8L18 9.4z"></path>
+    </svg>
+</template>
+  
+<script>
+export default {
+    name: 'MaterialSymbolsKeyboardArrowDown'
+}
+</script>

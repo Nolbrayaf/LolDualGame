@@ -4,6 +4,10 @@ body {
     background: linear-gradient(to bottom, #091428 0%, #0A1428 100%);
 }
 
+.bg-primary {
+    background: linear-gradient(to bottom, #091428 0%, #0A1428 100%);
+}
+
 .text-color-primary {
     background: linear-gradient(to bottom, #F0E6D2, #C8AA6E, #C8AA6E, #C89B3C, #785A28, #463714, #32281E);
     -webkit-background-clip: text;
@@ -19,10 +23,6 @@ input[type="search"]::-ms-clear {
     display: none;
 }
 
-
-form {
-    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%);
-}
 /* HOVER EFFECT ON NAV LINK */
 
 .border-bottom-hover {

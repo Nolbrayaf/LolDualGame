@@ -2,8 +2,7 @@
 import { server } from '~/services/api.js'
 
 const prop = defineProps({
-    "champion": Object,
-    "isLoading": Boolean
+    "champion": Object
 })
 
 
@@ -11,50 +10,19 @@ const prop = defineProps({
 
 
 <template >
-    <div v-if="isLoading" class="p-4 flex flex-col gap-4 border border-slate-600 rounded-lg bg-[#1E282D] loading-animation">
-
-        <div class="animate-pulse flex space-x-4">
-            <div class="rounded-full bg-slate-700 h-12 w-12"></div>
-            <div class="flex-1 space-y-6 py-1">
-                <div class="h-2 bg-slate-700 rounded"></div>
-                <div class="space-y-3">
-                    <div class="grid grid-cols-3 gap-4">
-                        <div class="h-2 bg-slate-700 rounded col-span-2"></div>
-                        <div class="h-2 bg-slate-700 rounded col-span-1"></div>
-                    </div>
-                    <div class="h-2 bg-slate-700 rounded"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div v-else class="p-4 flex flex-col gap-4 border border-slate-600 rounded-lg bg-[#1E282D]">
+    <div class="p-4 flex flex-col gap-4 border border-slate-600 rounded-lg bg-[#1E282D]">
         <div>
             <p class="text-xl font-bold m-auto w-fit ">{{ champion.name }}</p>
             <p class="text-md text-slate-400 italic font-bold m-auto w-fit ">{{ champion.title }}</p>
         </div>
-        <img :src="server + '/storage/' + champion.square_art_path" :alt="champion.name" class="w-32 h-32 m-auto">
+        <img :src="server + '/storage/' + champion.square_art_path" :alt="champion.name" loading="lazy"
+            class="w-32 h-32 m-auto">
+        <div v-if="champion.tags"  class="flex gap-1 justify-center">
+            <img v-for="tag in champion.tags" :key="tag" :src="server + '/storage/role_icons/' + tag + '_icon.webp'" :alt="tag" class="w-[30px]" loading="lazy" :title="tag">
+
+        </div>
+        
     </div>
 </template>
 
-<style scoped>
-@keyframes pulse {
-    0% {
-        transform: scale(1);
-        opacity: 1;
-    }
-    50% {
-        transform: scale(1.05);
-        opacity: 0.7;
-    }
-    100% {
-        transform: scale(1);
-        opacity: 1;
-    }
-}
-
-.loading-animation {
-    animation: pulse 1s infinite ease-in-out;
-}
-
-</style>
-
+<style scoped></style>
