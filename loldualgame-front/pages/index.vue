@@ -1,5 +1,10 @@
 <template >
     <main class="flex flex-col items-center">
+
+        <!-- Blank Space for Header Fixed-->
+        <div class="h-[61px] md:hidden">
+
+        </div>
         <div class="p-8">
             <h1 class="text-5xl font-bold text-color-primary">LEAGUE OF LEGEND</h1>
             <h2 class="text-3xl font-bold text-color-primary italic text-center">The Dual Game</h2>
@@ -7,16 +12,23 @@
         <p class="text-2xl">Choisissez votre champion</p>
         <div class="flex flex-col gap-4">
 
-
-            <!-- Barre de recherche -->
+            <!-- Filter -->
             <form class="flex justify-between w-full border border-slate-600 text-white my-4  bg-transparent pr-4">
-                <div class="flex items-center md:w-1/6">
-                    <input type="search" v-model="search"
-                        class="bg-transparent w-full h-full text-slate-400 p-4 outline-none" placeholder="Rechercher">
-                    <IconsSearch class=" " />
+                <!-- SearchBar -->
+                <div :class="isSearchBarFocused ? 'w-full transition duration-300 ease-in-out' : ''"
+                    class=" flex items-center  md:w-1/6">
+                    <input @focus="isSearchBarFocused = true" @blur="isSearchBarFocused = false" id="searchBar"
+                        type="search" v-model="search"
+                        :class="isSearchBarFocused ? 'w-full transition duration-300 ease-in-out' : ''"
+                        class=" bg-transparent w-full h-full text-slate-400 p-4 outline-none" placeholder="Rechercher">
+                    <label for="searchBar">
+                        <IconsSearch class=" " />
+                    </label>
                 </div>
                 <hr class="w-[1px] h-[35px] bg-slate-600 my-auto border-none">
-                <div class="relative my-auto min-w-[80px]">
+
+                <!-- Role Filter -->
+                <div :class="isSearchBarFocused ? 'hidden md:flex' : ''" class="relative my-auto min-w-[80px]">
                     <div class="flex items-center justify-center gap-2 cursor-pointer text-slate-400 md:hidden"
                         @click="isTagsMenuOpen = !isTagsMenuOpen">
                         <p>Rôle</p>
@@ -31,7 +43,9 @@
                 </div>
                 <hr class="w-[1px] h-[35px] bg-slate-600 my-auto border-none">
 
+                <!-- Difficulty Filter -->
                 <select v-if="difficulty" v-model="selectedDifficulty" id=""
+                    :class="isSearchBarFocused ? 'hidden md:flex' : ''"
                     class="bg-transparent text-slate-400 outline-none cursor-pointer">
                     <option value="" selected>Toutes les difficultés</option>
                     <option v-for="diff in difficulty" :value="diff">
@@ -47,13 +61,66 @@
             <transition name="fade">
                 <div v-if="displayedChampions" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 p-4">
                     <CardsChampion v-if="displayedChampions.length > 0" v-for="champion in displayedChampions"
-                        :key="champion.id" :champion="champion" />
+                        :key="champion.id" :champion="champion" @selectChampion="handleSelectChampionInfo" />
                     <p v-else class="text-slate-300 col-span-2 md:col-span-3 lg:col-span-5 text-center ">Aucun champion
                         trouvé</p>
                 </div>
             </transition>
         </div>
 
+
+
+        <!-- Informations Champions -->
+        <transition name="fade">
+
+            <div v-if="isChampionInfoOpen && selectedChampion" @click="isChampionInfoOpen = false"
+                class="z-10 fixed bottom-0 top-0 left-0 right-0 bg-[rgba(0,0,0,0.8)] flex items-center justify-center">
+
+
+
+                <div class="flex">
+                    <div class="p-4 flex flex-col items-center gap-4">
+                        <h2 class="text-5xl font-bold">{{ selectedChampion.name }}</h2>
+                        <p class="text-slate-300 text-2xl">{{ selectedChampion.title }}</p>
+                        <img :src="server + '/storage/' + selectedChampion.splash_art_path" :alt="selectedChampion.name"
+                            class="w-1/2">
+                        <p class="w-1/2 text-slate-300 font-bold">{{ selectedChampion.description }}</p>
+                        <div class="flex gap-4">
+                            <div v-for="spell in selectedChampion.spells">
+                                <img :key="spell.id" :src="server + '/storage/' + spell.image_path" alt="">
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <p>Points de vie: {{ championStats.hp }}</p>
+                        <p>Type de ressource: <span :class="getResourceTypeClass(selectedChampion.partype)">{{
+                            selectedChampion.partype }}</span></p>
+                        <p>MP: {{ championStats.mp }}</p>
+                        <p>Chance de coup critique: {{ championStats.crit }}%</p>
+                        <p>Armure: {{ championStats.armor }}</p>
+                        <p>Vitesse de déplacement: {{ championStats.movespeed }}</p>
+                        <p>Vitesse d'attaque : {{ championStats.attackspeed }} </p>
+                        <p>Dégâts de base : {{ championStats.attackdamage }}</p>
+                        <p>Chance de bloquer l'attaque : {{ championStats.spellblock }}%</p>
+
+                        <!-- Statistiques de Régénération -->
+                        <p>Régen PV/Tour: {{ championStats.hpregen * 10 }}</p>
+                        <p>Régen MP/Tour: {{ championStats.mpregen * 10 }}</p>
+
+                        <!-- Gains par Niveau -->
+                        <p>Gain d'HP par niveau : {{ championStats.hpperlevel }}</p>
+                        <p>Gain d'MP par niveau : {{ championStats.mpperlevel }}</p>
+                        <p>Gain d'armure par niveau : {{ championStats.armorperlevel }}</p>
+                        <p>Gain de régen PV/tour par niveau : {{ championStats.hpregenperlevel * 10 }}</p>
+                        <p>Gain de régen MP/tour par niveau : {{ championStats.mpregenperlevel * 10 }}</p>
+                        <p>Gain de chance de blocage par niveau : {{ championStats.spellblockperlevel }}</p>
+                        <p>Gain de Vitesse d'attaque par niveau : {{ championStats.attackspeedperlevel / 10 }}</p>
+                        <p>Gain de dégats de base par niveau : {{ championStats.attackdamageperlevel }}</p>
+                    </div>
+                </div>
+            </div>
+        </transition>
+        <!--                 -->
     </main>
 </template>
 
@@ -69,7 +136,29 @@ const difficulty = ref([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
 const search = ref('')
 const selectedDifficulty = ref('')
 const isTagsMenuOpen = ref(false)
+const isSearchBarFocused = ref(false)
+const selectedChampion = ref(null)
+const isChampionInfoOpen = ref(false);
+const championStats = ref(null)
 
+const handleSelectChampionInfo = async (champion) => {
+    selectedChampion.value = champion
+
+    fetch(server + '/api/champions/' + selectedChampion.value.id + '/spells')
+        .then(response => response.json())
+        .then(data => {
+            selectedChampion.value.spells = data
+            championStats.value = selectedChampion.value.stats
+            console.log(typeof championStats.value)
+
+        })
+
+
+
+
+    isChampionInfoOpen.value = true
+    console.log(selectedChampion.value)
+}
 
 
 const filterChampions = (tag) => {
@@ -114,19 +203,43 @@ onMounted(async () => {
     champions.value = data.map(champion => ({
         ...champion,
         info: JSON.parse(champion.info),
-        tags: JSON.parse(champion.tags)
+        tags: JSON.parse(champion.tags),
+        stats: JSON.parse(champion.stats)
     }));
     displayedChampions.value = champions.value;
     isLoading.value = false;
 });
 
-
-
-
-
-
-
-
+const getResourceTypeClass = (partype) => {
+    switch (partype) {
+        case 'Mana':
+            return 'text-blue-500';
+        case 'Énergie':
+            return 'text-yellow-500';
+        case 'Puits de sang':
+            return 'text-red-500';
+        case 'Férocité':
+            return 'text-red-500';
+        case 'Fureur':
+            return 'text-red-500';
+        case 'Agressivité':
+            return 'text-red-500';
+        case 'Afflux sanguin':
+            return 'text-red-500';
+        case 'Fureur':
+            return 'text-red-500';
+        case 'Courage':
+            return 'text-green-500';
+        case 'Bouclier':
+            return 'text-blue-500';
+        case 'Impulsion':
+            return 'text-blue-400';
+        case 'Vapeur':
+            return 'text-blue-300';
+        default:
+            return 'text-slate-500';
+    }
+};
 
 </script>
 

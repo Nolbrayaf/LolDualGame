@@ -20,7 +20,7 @@ onMounted(() => {
 
 
 <template>
-    <header class="z-100 flex gap-4 justify-between items-center px-8 border-b border-slate-600">
+    <header class="fixed bg-primary md:static top-0 left-0 right-0 z-[200] flex gap-4 justify-between items-center px-8 border-b border-slate-600">
         <div class="">
             <NuxtLink to="/">
                 <ButtonsPlay />
@@ -29,7 +29,7 @@ onMounted(() => {
         </div>
 
         <div :class="isBurgerMenuOpen ? '' : 'translate-x-full'"
-            class=" z-10 transition duration-300 easing-in-out md:transform-none p-4 pl-0 fixed bg-[#010A13] bottom-0 top-0 right-0 flex-col md:p-0 md:bg-transparent md:sticky flex md:flex-row gap-4"
+            class=" z-10 border-l border-slate-600 md:border-none transition duration-300 easing-in-out md:transform-none p-4 pl-0 fixed bg-[#010A13] bottom-0 top-0 right-0 flex-col md:p-0 md:bg-transparent md:sticky flex md:flex-row gap-4"
             @click="isBurgerMenuOpen = false">
             <IconsCross class="md:hidden cursor-pointer self-end" @click="isBurgerMenuOpen = false" />
             <p @click="isAboutOpen = true"
