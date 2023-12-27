@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ChampionController;
+use App\Http\Controllers\SpellController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -21,3 +22,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::resource('champions', ChampionController::class);
 Route::get('/champions_tags', [ChampionController::class, 'getUniqueTags']);
+Route::get('/champions/{championId}/spells', [SpellController::class, 'getSpellsForChampion']);
