@@ -7,24 +7,47 @@ const prop = defineProps({
 
 const emit = defineEmits(['selectChampion'])
 
-function selectChampion(){
+
+
+function selectChampion() {
     emit('selectChampion', prop.champion)
 }
 
+onMounted(() => {
+    watch(isInfoOpen, (newValue) => {
+        if (newValue) adjustInfoDivPosition();
+    });
+});
 
 const isInfoOpen = ref(false)
-const isFullInfoOpen = ref(false)
+const infoDiv = ref(null)
 
+
+function adjustInfoDivPosition() {
+    const infoDivRect = infoDiv.value.getBoundingClientRect();
+    const rightEdge = infoDivRect.right;
+    const screenRightEdge = window.innerWidth;
+    console.log(rightEdge + 125, screenRightEdge)
+    if (rightEdge + 125 > screenRightEdge) {
+        infoDiv.value.style.left = "-125px";
+        infoDiv.value.style.right = "";
+
+    }else{
+        infoDiv.value.style.right = "-125px";
+        infoDiv.value.style.left = "";
+    }
+}
 </script>
 
 
 <template >
-    <div class="relative group md:min-w-[200px] p-4 flex flex-col gap-4 border border-slate-600 rounded-lg bg-[#1E282D]">
+    <div @mouseover="isInfoOpen = true" @mouseleave="isInfoOpen = false"
+        class="relative md:min-w-[200px] p-4 flex flex-col gap-4 border border-slate-600 rounded-lg bg-[#1E282D]">
         <div>
             <p class="text-xl font-bold m-auto w-fit ">{{ champion.name }}</p>
             <p class="text-md text-slate-400 italic font-bold m-auto w-fit ">{{ champion.title }}</p>
         </div>
-        <div v-if="!isInfoOpen" class="flex flex-col gap-4">
+        <div class="flex flex-col gap-4">
             <img :src="server + '/storage/' + champion.square_art_path" :alt="champion.name" loading="lazy"
                 class="w-32 h-32 m-auto">
             <div v-if="champion.tags" class="flex gap-1 justify-center">
@@ -32,7 +55,8 @@ const isFullInfoOpen = ref(false)
                     :alt="tag" class="w-[30px]" loading="lazy" :title="tag">
             </div>
         </div>
-        <div v-else class="items-center justify-center flex flex-col gap-1">
+        <div ref="infoDiv" :class="isInfoOpen ? 'translate-x-0 opacity-100' : '-translate-x-20 opacity-0 z-0'"
+            class="absolute transition duration-300 ease-in-out top-0  bg-[#1E282D] border border-slate-600 rounded-lg p-4 z-10 items-center justify-center flex flex-col gap-1">
             <p class="text-md text-slate-300 italic">Attaque : {{ champion.info.attack }}</p>
             <p class="text-md text-slate-300 italic">Magie : {{ champion.info.magic }}</p>
             <p class="text-md text-slate-300 italic">Défense : {{ champion.info.defense }}</p>

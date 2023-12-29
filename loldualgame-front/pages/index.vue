@@ -35,7 +35,7 @@
                         <IconsArrowDown />
                     </div>
                     <ul v-if="tags" :class="isTagsMenuOpen ? 'absolute' : 'hidden'"
-                        class="bg-primary w-[80px] h-[200px] border border-slate-600 border-t-0 md:border-none md:w-fit md:h-fit overflow-y-auto top-[165%] -left-0 md:bg-transparent md:sticky md:flex gap-2">
+                        class="bg-primary w-[80px] h-[200px] border border-slate-600 border-t-0 md:border-none md:w-fit md:h-fit overflow-y-auto top-[165%] -left-0 md:bg-transparent md:sticky md:flex gap-2 z-10">
                         <li v-for="tag in tags"
                             :class="selectedTag === tag ? 'border-l-[#c2902d] border-l-2 md:border-l-0 md:border-b-[#c2902d] md:border-b-2' : 'hoverBorderEffect'"
                             class=" px-2 py-4  cursor-pointer sticky" @click="filterChampions(tag)">{{ tag }}</li>
@@ -74,48 +74,79 @@
         <transition name="fade">
 
             <div v-if="isChampionInfoOpen && selectedChampion" @click="isChampionInfoOpen = false"
-                class="z-10 fixed bottom-0 top-0 left-0 right-0 bg-[rgba(0,0,0,0.8)] flex items-center justify-center">
+                class="z-10 fixed overflow-scroll top-[61px] bottom-0 md:top-0 left-0 right-0 bg-[rgba(0,0,0,0.8)] flex items-center justify-center">
 
 
 
-                <div class="flex">
-                    <div class="p-4 flex flex-col items-center gap-4">
-                        <h2 class="text-5xl font-bold">{{ selectedChampion.name }}</h2>
-                        <p class="text-slate-300 text-2xl">{{ selectedChampion.title }}</p>
+                <div class="flex flex-col md:flex-row items-center justify-center gap-4 p-4">
+                    <div class="p-4 flex flex-col items-center gap-4 md:w-1/2">
+                        <h2 class="text-3xl md:text-5xl font-bold">{{ selectedChampion.name }}</h2>
+                        <p class="text-slate-300 text-lg md:text-2xl">{{ selectedChampion.title }}</p>
                         <img :src="server + '/storage/' + selectedChampion.splash_art_path" :alt="selectedChampion.name"
-                            class="w-1/2">
-                        <p class="w-1/2 text-slate-300 font-bold">{{ selectedChampion.description }}</p>
+                            class="max-w-[300px] md:max-w-full md:w-1/2">
+                        <p class=" text-slate-300 font-bold text-xs md:text-md text-center md:text-left">{{
+                            selectedChampion.description }}</p>
                         <div class="flex gap-4">
                             <div v-for="spell in selectedChampion.spells">
                                 <img :key="spell.id" :src="server + '/storage/' + spell.image_path" alt="">
                             </div>
                         </div>
                     </div>
-                    <div>
-                        <p>Points de vie: {{ championStats.hp }}</p>
-                        <p>Type de ressource: <span :class="getResourceTypeClass(selectedChampion.partype)">{{
-                            selectedChampion.partype }}</span></p>
-                        <p>MP: {{ championStats.mp }}</p>
-                        <p>Chance de coup critique: {{ championStats.crit }}%</p>
-                        <p>Armure: {{ championStats.armor }}</p>
-                        <p>Vitesse de déplacement: {{ championStats.movespeed }}</p>
-                        <p>Vitesse d'attaque : {{ championStats.attackspeed }} </p>
-                        <p>Dégâts de base : {{ championStats.attackdamage }}</p>
-                        <p>Chance de bloquer l'attaque : {{ championStats.spellblock }}%</p>
-
-                        <!-- Statistiques de Régénération -->
-                        <p>Régen PV/Tour: {{ championStats.hpregen * 10 }}</p>
-                        <p>Régen MP/Tour: {{ championStats.mpregen * 10 }}</p>
-
-                        <!-- Gains par Niveau -->
-                        <p>Gain d'HP par niveau : {{ championStats.hpperlevel }}</p>
-                        <p>Gain d'MP par niveau : {{ championStats.mpperlevel }}</p>
-                        <p>Gain d'armure par niveau : {{ championStats.armorperlevel }}</p>
-                        <p>Gain de régen PV/tour par niveau : {{ championStats.hpregenperlevel * 10 }}</p>
-                        <p>Gain de régen MP/tour par niveau : {{ championStats.mpregenperlevel * 10 }}</p>
-                        <p>Gain de chance de blocage par niveau : {{ championStats.spellblockperlevel }}</p>
-                        <p>Gain de Vitesse d'attaque par niveau : {{ championStats.attackspeedperlevel / 10 }}</p>
-                        <p>Gain de dégats de base par niveau : {{ championStats.attackdamageperlevel }}</p>
+                    <div class="md:w-1/2 flex flex-col gap-4">
+                        <div>
+                            <h2 class="md:text-2xl font-bold text-center gradient-border py-1 md:py-3 ">Statistiques de
+                                Bases</h2>
+                            <div class="flex justify-between p-2 text-xs md:text-md">
+                                <p>Points de vie : {{ championStats.hp }}</p>
+                                <p>Type de ressource : <span :class="getResourceTypeClass(selectedChampion.partype)">{{
+                                    selectedChampion.partype }}</span></p>
+                            </div>
+                            <div class="flex justify-between p-2 text-xs md:text-md ">
+                                <p>MP : {{ championStats.mp }}</p>
+                                <p>Chance de coup critique : {{ championStats.crit }}%</p>
+                            </div>
+                            <div class="flex justify-between p-2 text-xs md:text-md ">
+                                <p>Armure : {{ championStats.armor }}</p>
+                                <p>Vitesse de déplacement : {{ championStats.movespeed }}</p>
+                            </div>
+                            <div class="flex justify-between p-2 text-xs md:text-md ">
+                                <p>Vitesse d'attaque : {{ championStats.attackspeed }} </p>
+                                <p>Dégâts de base : {{ championStats.attackdamage }}</p>
+                            </div>
+                            <p class="p-2 text-xs md:text-md">Chance de bloquer l'attaque : {{ championStats.spellblock }}%
+                            </p>
+                        </div>
+                        <div>
+                            <h2 class="md:text-2xl font-bold text-center gradient-border py-1 md:py-3 ">Régénération / Tour
+                            </h2>
+                            <!-- Statistiques de Régénération -->
+                            <div class="flex justify-between p-2 text-xs md:text-md ">
+                                <p>Régen PV/Tour : {{ championStats.hpregen * 5 }}</p>
+                                <p>Régen MP/Tour : {{ championStats.mpregen }}</p>
+                            </div>
+                        </div>
+                        <div>
+                            <h2 class="md:text-2xl font-bold text-center gradient-border py-1 md:py-3 ">Gains par Niveau
+                            </h2>
+                            <!-- Gains par Niveau -->
+                            <div class="flex justify-between p-2 text-xs md:text-md ">
+                                <p>Gain d'HP par niveau : {{ championStats.hpperlevel }}</p>
+                                <p>Gain d'MP par niveau : {{ championStats.mpperlevel }}</p>
+                            </div>
+                            <div class="flex justify-between p-2 text-xs md:text-md ">
+                                <p>Gain d'armure par niveau : {{ championStats.armorperlevel }}</p>
+                                <p>Gain de régen PV/tour par niveau : {{ championStats.hpregenperlevel * 10 }}</p>
+                            </div>
+                            <div class="flex justify-between p-2 text-xs md:text-md ">
+                                <p>Gain de régen MP/tour par niveau : {{ championStats.mpregenperlevel * 10 }}</p>
+                                <p>Gain de chance de blocage par niveau : {{ championStats.spellblockperlevel }}</p>
+                            </div>
+                            <div class="flex justify-between p-2 text-xs md:text-md ">
+                                <p>Gain de Vitesse d'attaque par niveau : {{ (championStats.attackspeedperlevel /
+                                    10).toFixed(2) }}</p>
+                                <p>Gain de dégats de base par niveau : {{ championStats.attackdamageperlevel }}</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -149,7 +180,6 @@ const handleSelectChampionInfo = async (champion) => {
         .then(data => {
             selectedChampion.value.spells = data
             championStats.value = selectedChampion.value.stats
-            console.log(typeof championStats.value)
 
         })
 
@@ -283,5 +313,4 @@ const getResourceTypeClass = (partype) => {
 
     width: 50%;
 
-}
-</style>
+}</style>
